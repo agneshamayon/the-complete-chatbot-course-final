@@ -67,6 +67,7 @@ async def chat(request: Request, user_input: Annotated[str,Form()]):
         temperature = .6)
 
     bot_response = response.choices[0].message.content
+    print('xxxxxxxxxxxxxxxxxx  ', bot_response)
     chat_log.append({'role' : 'assistant', 'content': bot_response})
     chat_responses.append(bot_response)
     return templates.TemplateResponse("home.html", {'request': request, "chat_responses": chat_responses})
