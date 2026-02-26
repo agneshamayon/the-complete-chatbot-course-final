@@ -1,0 +1,102 @@
+{% include 'layout.html' %}
+<div class="container mt-5">
+  <h3>
+    Add input to chat with personal chatbot
+  </h3>
+  <!--
+  <form action="/" method="POST">
+    <div>
+      <textarea class="form-control" placeholder="Add input here" name="user_input" rows="3"></textarea>
+      <button class="btn btn-primary mt-1" type="submit">Send</button>
+    </div>
+
+  </form>
+  -->
+  <div>
+    <div class="card text-center mt-3">
+      <div class="card-header">
+        Chat History:
+      </div>
+      <div class="card-body chat-history" id="chatHistory">
+        <!-- auto populate here -->
+        {% for response in chat_responses %}
+          <div class="{{'chat-message user-input' if loop.index0 is even else 'chat-message ai-response'}}">
+           {{response}}
+          </div>
+        {% endfor %}
+      </div>
+      <!--<div class="card-body">
+        {% for response in chat_responses %}
+        <div>
+          - {{response}}
+        </div>
+        {% endfor %}
+      </div>-->
+    </div>
+  </div>
+    <div class="container" id="footer">
+    <div class="input-group mb-3">
+      <input class="form-control" placeholder="Add input here" id="userInput">
+      <button class="btn btn-outline-primary" type="button" id="sendButton">Send</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  var websocketString = '';
+  /*
+  if (window.location.hostname === '127.0.0.1'){
+    websocketString = "ws://localhost:8000/ws";
+  } else {
+    websocketString = `wss://${window.location.hostname}/ws`
+  }
+  */
+  const wsProtocol = window.location.protocol === 'https:'
+  ? 'wss'
+  : 'ws';
+  websocketString = `${wsProtocol}://${window.location.host}/ws`;
+  var ws = new WebSocket(websocketString);
+  var sendButton =  document.getElementById("sendButton");
+  var userInput =  document.getElementById("userInput");
+  var chatHistory =  document.getElementById("chatHistory");
+  var lastUserMessageDiv = null; // keep track of the last uer message div
+  var isNewUserInput = true; // Flag to track when a new user input happens
+
+  ws.onmessage = function(event) {
+     var message = event.data.trim();
+     // Chek if it's a continuation of AI's last message or a new one
+     if (lastUserMessageDiv && !isNewUserInput){
+        var souldAddSpace = true;
+        var noPrependSpaceChars = [',','.','!','?',';',':',"'"];
+        if (noPrependSpaceChars.includes(message.charAt(0))){
+            souldAddSpace = false;
+         }
+         lastUserMessageDiv.textContent += (souldAddSpace ? " ":"") + message;
+     }
+     else{
+     //It's either a new user input or the first chunk of AI response for the late
+     var messageDiv = document.createElement("div");
+     message.className = "chat-message ai-reponse"; // assign class for styling
+     messageDiv.textContent = message;
+     chatHistory.appendChild(messageDiv);
+     lastUserMessageDiv = messageDiv;// update the reference to the last message
+     isNewUserInput = false; // Rest the flag as th AI response starts
+     };
+  }
+  sendButton.onclick = function() {
+    var message = userInput.value.trim();
+    if (message) {
+      var userInputDiv = document.createElement("div");
+      userInputDiv.className = "chat-message user-input"; //use user-input class
+      userInputDiv.textContent = message;
+      chatHistory.appendChild(userInputDiv);
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+      ws.send(message);
+      userInput.value = ""; // Clear input filed after sending
+      isNewUserInput = true; // set the flag as it's a new user input
+      lastUserMessageDiv = null; // prepare for the next message
+    }
+    };
+
+</script>
