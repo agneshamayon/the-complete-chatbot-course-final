@@ -74,7 +74,7 @@ async def chat(websocket: WebSocket):
             for chunk in response:
                 if chunk.choices[0].delta.content is not None:
                     ai_response += chunk.choices[0].delta.content
-                    await websocket.send_text(chunk.choices[0].delta.content)
+                    await websocket.send_text(chunk.choices[0].delta.content.lstrip())
             chat_responses.append(ai_response)
             print('ai:  ', ai_response)
         except Exception as e:
