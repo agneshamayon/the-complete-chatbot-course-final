@@ -72,8 +72,8 @@ async def chat(websocket: WebSocket):
             ai_response = ''
             for chunk in response:
                 if chunk.choices[0].delta.content is not None:
-                    ai_response += chunk.choices[0].delta.content
-                    await websocket.send_text(chunk.choices[0].delta.content)
+                    ai_response += "--ai--:" + chunk.choices[0].delta.content
+                    await websocket.send_text("--bi--:" +chunk.choices[0].delta.content)
             chat_responses.append(ai_response)
             print('ai:  ', ai_response)
         except Exception as e:
@@ -96,7 +96,7 @@ async def chat(request: Request, user_input: Annotated[str,Form()]):
     bot_response = response.choices[0].message.content
     print('xxxxxxxxxxxxxxxxxx  ', bot_response)
     chat_log.append({'role' : 'assistant', 'content': bot_response})
-    chat_responses.append(bot_response)
+    chat_responses.append("--bot--:" +bot_response)
     return templates.TemplateResponse("home.html", {'request': request, "chat_responses": chat_responses})
 
 
