@@ -57,7 +57,7 @@ async def chat(websocket: WebSocket):
                     ai_response += chunk.choices[0].delta.content
                     await websocket.send_text(chunk.choices[0].delta.content)
             chat_responses.append(ai_response)
-
+            print('ai:  ', ai_response)
         except Exception as e:
             await websocket.send_text(f"Error: {str(e)}")
             break
@@ -67,7 +67,7 @@ async def chat(websocket: WebSocket):
 @app.post("/", response_class=HTMLResponse)
 async def chat(request: Request, user_input: Annotated[str,Form()]):
     chat_log.append({'role' : 'user', 'content': user_input})
-    chat_responses = []
+
     chat_responses.append(user_input)
 
     response = openai.chat.completions.create(
