@@ -21,10 +21,17 @@ chat_responses = []
 async def chat_page(request: Request):
     return templates.TemplateResponse("home.html", {"request":request, "chat_responses":chat_responses})
 
-chat_log = [{'role': 'system', 'content': 'you are a Python tutor, completely dedicated to teach users how to\
-                                          python from scratch.Please, give best practice'}]
+#chat_log = [{'role': 'system', 'content': 'you are a Python tutor, completely dedicated to teach users how to\
+#                                         python from scratch.Please, give best practice'}]
 
-
+chat_log = [{'role': 'system', 'content': 'Au centre d’un domaine privé de plus de 100ha et bénéficiant d’une vue exceptionnelle sur les causses et la vallée de la Dourbie, cette grande demeure offre une totale tranquillité.'
+                                          '7 Chambres - 4 parentales dont 2 de 30m2 avec grande terrasse et salles de bain en-suite et 1 de 40m2 et trois chambres d’enfants permettent d’accueillir jusqu’à 14 convives. Les salles communes comprennent un salon/cuisine/SAM de 50m2 et 2 salons séparés afin que chacun puisse profiter du séjour selon son humeur. 5 SDB dont 3 séparées et 6 WC (4 séparés), 1 buanderie / cellier. Des climatiseurs sont installés dans 2 salons et 6 chambres.'
+                                          'L’extérieur est organisé pour le farniente et les activités sportives : Une grande piscine au sel chauffée de 6x12m avec ses transats, 1 terrain d’entrainement de basket (10x10m), 1 terrain de boules et une table de ping pong. Les amateurs de tennis pourront profiter du tennis municipal, gratuit et généralement libre, à proximité. Le GR passe devant la maison et il faut impérativement le suivre pour visiter le site classé de St Véran (45mn aller) ou de Roquesaltes (2h aller).'
+                                          'Le domaine est situé sur les hauteurs de la vallée de la Dourbie dans le site des grands causses, site classé au patrimoine mondial de l’Unesco. Le domaine se trouve à 20km de Millau et de la A75.'
+                                          'C’est un endroit idéal pour les vacances en famille ou en petit groupe, pour les amoureux des sports, de la nature et de la culture- cités et bastides templières et hospitalières, grottes et avens exceptionnels, le chaos de Montpellier le vieux et le site archéologique de la Graufesenque, et bien sur le viaduc.'
+                                          'Chaque saison offre ses particularités. En hiver ski de fond à 40km au mont Aigoual et les nuits noires étoilées et la gastronomie de la truffe, printemps et automne pour les grandes promenades, les déjeuners au soleil et les soirées au coin de la cheminée;'
+                                          'Ce domaine c’est l’espace, la sérénité, la liberté des petits et des grands dans un espace convivial et confortable.'
+                                          'Les équipements sont Piscine, Basket, terrain de boule,Lave-linge,Sèche-linge,Animaux de compagnie admis,Wi-Fi gratuit'}]
 #server connection
 @app.websocket("/ws")
 async def chat(websocket: WebSocket):
