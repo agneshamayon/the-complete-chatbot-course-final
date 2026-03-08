@@ -61,7 +61,8 @@ async def chat(websocket: WebSocket):
         chat_responses.append(user_input)
         try:
             response = openai.chat.completions.create(
-                model='gpt-3.5-turbo',
+                #model='gpt-3.5-turbo',
+                model='gpt-4o-mini',
                 messages=chat_log,
                 temperature=.6,
                 stream =True
@@ -72,8 +73,8 @@ async def chat(websocket: WebSocket):
             ai_response = ''
             for chunk in response:
                 if chunk.choices[0].delta.content is not None:
-                    ai_response += chunk.choices[0].delta.content.strip()
-                    await websocket.send_text(chunk.choices[0].delta.content.strip())
+                    ai_response += chunk.choices[0].delta.content
+                    await websocket.send_text(chunk.choices[0].delta.content)
             chat_responses.append(ai_response)
             print('ai:  ', ai_response)
         except Exception as e:
