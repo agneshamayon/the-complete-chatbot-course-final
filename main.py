@@ -67,6 +67,7 @@ async def chat(websocket: WebSocket):
 @app.post("/", response_class=HTMLResponse)
 async def chat(request: Request, user_input: Annotated[str,Form()]):
     chat_log.append({'role' : 'user', 'content': user_input})
+    chat_responses = []
     chat_responses.append(user_input)
 
     response = openai.chat.completions.create(
