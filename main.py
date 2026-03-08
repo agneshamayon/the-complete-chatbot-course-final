@@ -31,7 +31,8 @@ chat_log = [{'role': 'system', 'content': 'Au centre d’un domaine privé de pl
                                           'C’est un endroit idéal pour les vacances en famille ou en petit groupe, pour les amoureux des sports, de la nature et de la culture- cités et bastides templières et hospitalières, grottes et avens exceptionnels, le chaos de Montpellier le vieux et le site archéologique de la Graufesenque, et bien sur le viaduc.'
                                           'Chaque saison offre ses particularités. En hiver ski de fond à 40km au mont Aigoual et les nuits noires étoilées et la gastronomie de la truffe, printemps et automne pour les grandes promenades, les déjeuners au soleil et les soirées au coin de la cheminée;'
                                           'Ce domaine c’est l’espace, la sérénité, la liberté des petits et des grands dans un espace convivial et confortable.'
-                                          'Les équipements sont Piscine, Basket, terrain de boule,Lave-linge,Sèche-linge,Animaux de compagnie admis,Wi-Fi gratuit'}]
+                                          'Les équipements sont Piscine, Basket, terrain de boule,Lave-linge,Sèche-linge,Animaux de compagnie admis,Wi-Fi gratuit.'
+                                          'Donne une réponse concise et courte avec des mots sans cesure'}]
 #server connection
 @app.websocket("/ws")
 async def chat(websocket: WebSocket):
