@@ -36,7 +36,7 @@ chat_log = [{'role': 'system', 'content': 'Au centre d’un domaine privé de pl
 """
 
 chat_log = [{'role': 'system', 'content': 'Large Comfortable Residence in a Private Estate with Pool and Breathtaking Views'
-                                          'Set in the heart of a private estate of over 100 hectares and enjoying exceptional views over the "Causses plateaux" and the "Dourbie Valley", this large residence offers complete tranquility.'
+                                          'Set in the heart of a private estate of over 100 hectares and enjoying exceptional views over the Causses plateaux"and the Dourbie Valley, this large residence offers complete tranquility.'
                                           '7 bedrooms – including 4 master suites (two of 30 m² with large terraces and en-suite bathrooms, and one of 40 m²), plus three children’s bedrooms – allow accommodation for up to 14 guests.'
                                           'The common areas include a 50 m² living room / kitchen / dining area and two additional separate lounges, so everyone can enjoy the stay according to their mood.'
                                           'There are 5 bathrooms (including 3 separate), 6 toilets (4 separate), and 1 laundry / pantry room.'
@@ -46,8 +46,8 @@ chat_log = [{'role': 'system', 'content': 'Large Comfortable Residence in a Priv
                                           'A basketball practice court (10 × 10 m), A boules court , A ping-pong table'
                                           'Tennis enthusiasts can enjoy the nearby municipal tennis court, which is free and generally available.'
                                           'A GR hiking trail passes directly in front of the house and must be followed to visit the listed site of Saint-Véran (45 minutes one way) or Roquesaltes (2 hours one way).'
-                                          'The estate is located on the heights of the Dourbie Valley, within the "Grands Causses", a UNESCO World Heritage Site. It lies 20 km from Millau and the A75 motorway.'
-                                          'It is an ideal place for family holidays or small groups, for lovers of sports, nature, and culture: Templar and Hospitaller towns and bastides, spectacular caves and sinkholes, the rock formations of "Montpellier-le-Vieux", the archaeological site of "La Graufesenque", and of course the famous viaduc.'
+                                          'The estate is located on the heights of the Dourbie Valley, within the Grands Causses, a UNESCO World Heritage Site. It lies 20 km from Millau and the A75 motorway.'
+                                          'It is an ideal place for family holidays or small groups, for lovers of sports, nature, and culture: Templar and Hospitaller towns and bastides, spectacular caves and sinkholes, the rock formations of "Montpellier-le-Vieux", the archaeological site of "La Graufesenque", and of course the famous viaduct.'
                                           'Each season has its own charm. In winter, cross-country skiing at "Mont Aigoual" (40 km away), dark starry nights, and truffle gastronomy; spring and autumn are perfect for long walks, sunny lunches, and evenings by the fireplace.'
                                           'This estate offers space, serenity, and freedom for both children and adults, in a friendly and comfortable setting.'
                                           'Give a precise and short answer'}]
@@ -68,13 +68,14 @@ async def chat(websocket: WebSocket):
                 stream =True
             )
 
-            #bot_response = response.choices[0].message.content
             #await websocket.send_text(bot_response)
             ai_response = ''
             for chunk in response:
                 if chunk.choices[0].delta.content is not None:
                     ai_response += chunk.choices[0].delta.content
-                    await websocket.send_text(chunk.choices[0].delta.content.lstrip())
+                    bi = '.' + chunk.choices[0].delta.content + ';'
+                    print('bi:  ', bi)
+                    await websocket.send_text(chunk.choices[0].delta.content)
             chat_responses.append(ai_response)
             print('ai:  ', ai_response)
         except Exception as e:
@@ -90,7 +91,8 @@ async def chat(request: Request, user_input: Annotated[str,Form()]):
     chat_responses.append(user_input)
 
     response = openai.chat.completions.create(
-        model='gpt-3.5-turbo',
+        #model='gpt-3.5-turbo',
+        model='gpt-4o-mini',
         messages=chat_log,
         temperature = .6)
 

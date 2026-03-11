@@ -9,6 +9,65 @@
 
         <title>Chatbot</title>
         <style>
+
+            #chatbot-container {
+              position: fixed;
+              bottom: 20px;
+              right: 20px;
+              font-family: Arial, sans-serif;
+            }
+
+            #chatbot-toggle {
+              width: 60px;
+              height: 60px;
+              border-radius: 50%;
+              background: #007bff;
+              color: white;
+              border: none;
+              font-size: 24px;
+              cursor: pointer;
+            }
+
+            #chatbot-window {
+              display: none;
+              flex-direction: column;
+              width: 300px;
+              height: 400px;
+              background: white;
+              border: 1px solid #ddd;
+              border-radius: 10px;
+              position: absolute;
+              bottom: 70px;
+              right: 0;
+            }
+
+            #chatbot-header {
+              background: #007bff;
+              color: white;
+              padding: 10px;
+              border-radius: 10px 10px 0 0;
+            }
+
+            #chatbot-messages {
+              flex: 1;
+              padding: 10px;
+              overflow-y: auto;
+            }
+
+            #chatbot-input {
+              border: none;
+              border-top: 1px solid #ddd;
+              padding: 10px;
+              position: absolute;
+            }
+            #chatHistory{
+                text-align: left;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+            }
+            //
             .chat-history{
                 text-align: left;
                 width: 100%;
@@ -39,6 +98,8 @@
                 display:flex;
                 overflow-y: auto;
                 white-space: nowrap;
+                word-break: normal;
+                overflow-wrap: break-word;
                }
             #footer {
                 position: fixed;
@@ -47,12 +108,18 @@
                 }
         </style>
     </head>
-    <body>
+            body {
+  background-image: "images/background.jpg";
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+    <!--<body>
         {% include 'navbar.html' %}
         {% block content %}
         {% endblock %}
-        <!-- Option 1: Bootstrap Bundle with Popper -->
+        <!- Option 1: Bootstrap Bundle with Popper ->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
-    </body>
+    </body>-->
 </html>

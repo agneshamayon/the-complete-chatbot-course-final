@@ -1,44 +1,24 @@
 {% include 'layout.html' %}
+<!--<body style="background-image: url('images/background.jpg');"></body>
+<img src="{{image_url}}" alt="image">-->
 <div class="container mt-5">
-  <h3>
-    Add input to chat with personal chatbot
-  </h3>
-  <!--
-  <form action="/" method="POST">
-    <div>
-      <textarea class="form-control" placeholder="Add input here" name="user_input" rows="3"></textarea>
-      <button class="btn btn-primary mt-1" type="submit">Send</button>
-    </div>
-
-  </form>
-  -->
-  <div>
-    <div class="card text-center mt-3">
-      <div class="card-header">
-        Chat History:
-      </div>
-      <div class="card-body chat-history" id="chatHistory">
-        <!-- auto populate here -->
+    <!--<img src="../images/background.JPG" alt="image">-->
+    <div id="chatbot-container">
+    <div id="chatbot-window">
+      <div id="chatbot-header">Chatbot</div>
+      <div id="chatHistory">
         {% for response in chat_responses %}
           <div class="{{'chat-message user-input' if loop.index0 is even else 'chat-message ai-response'}}">
            {{response}}
           </div>
         {% endfor %}
       </div>
-      <!--<div class="card-body">
-        {% for response in chat_responses %}
-        <div>
-          - {{response}}
-        </div>
-        {% endfor %}
-      </div>-->
+
+      <input class="form-control" placeholder="Add input here" id="chatbot-input">
     </div>
+
+    <button id="chatbot-toggle">💬</button>
   </div>
-    <div class="container" id="footer">
-    <div class="input-group mb-3">
-      <input class="form-control" placeholder="Add input here" id="userInput">
-      <button class="btn btn-outline-primary" type="button" id="sendButton">Send</button>
-    </div>
 
   </div>
 </div>
@@ -57,34 +37,45 @@
   : 'ws';
   websocketString = `${wsProtocol}://${window.location.host}/ws`;
   var ws = new WebSocket(websocketString);
-  var sendButton =  document.getElementById("sendButton");
-  var userInput =  document.getElementById("userInput");
   var chatHistory =  document.getElementById("chatHistory");
   var lastUserMessageDiv = null; // keep track of the last uer message div
   var isNewUserInput = true; // Flag to track when a new user input happens
+  const toggle = document.getElementById("chatbot-toggle");
+  const windowChat = document.getElementById("chatbot-window");
+  const userInput = document.getElementById("chatbot-input");
+
+  let buffer = "";
 
   ws.onmessage = function(event) {
-     var message = event.data.trim();
-     // Chek if it's a continuation of AI's last message or a new one
-     if (lastUserMessageDiv && !isNewUserInput){
-        var souldAddSpace = true;
-        var noPrependSpaceChars = [',','.','!','?',';',':',"'"];
-        if (noPrependSpaceChars.includes(message.charAt(0))){
-            souldAddSpace = false;
-         }
-         lastUserMessageDiv.textContent += (souldAddSpace ? " ":"") + message;
-     }
-     else{
-     //It's either a new user input or the first chunk of AI response for the late
-     var messageDiv = document.createElement("div");
-     message.className = "chat-message ai-reponse"; // assign class for styling
-     messageDiv.textContent = message;
-     chatHistory.appendChild(messageDiv);
-     lastUserMessageDiv = messageDiv;// update the reference to the last message
-     isNewUserInput = false; // Rest the flag as th AI response starts
-     };
-  }
-  sendButton.onclick = function() {
+
+      const token = event.data;
+
+      buffer += token;
+
+      // afficher seulement quand on a un espace ou ponctuation
+      if (/[ .,!?;:]/.test(token.slice(-1))) {
+
+          if (lastUserMessageDiv && !isNewUserInput) {
+
+              lastUserMessageDiv.textContent += buffer;
+
+          } else {
+
+              const messageDiv = document.createElement("div");
+              messageDiv.className = "chat-message ai-reponse";
+
+              messageDiv.textContent = buffer;
+
+              chatHistory.appendChild(messageDiv);
+              lastUserMessageDiv = messageDiv;
+              isNewUserInput = false;
+          }
+
+          buffer = "";
+      }
+  };
+
+  sendMessage = function(){
     var message = userInput.value.trim();
     if (message) {
       var userInputDiv = document.createElement("div");
@@ -98,5 +89,20 @@
       lastUserMessageDiv = null; // prepare for the next message
     }
     };
+
+
+    toggle.onclick = () => {
+      if (windowChat.style.display === "flex") {
+        windowChat.style.display = "none";
+      } else {
+        windowChat.style.display = "flex";
+      }
+    };
+    userInput.addEventListener("keydown", function(e){
+    if(e.key === "Enter"){
+      e.preventDefault();
+      sendMessage();
+    }
+  });
 
 </script>
