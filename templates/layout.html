@@ -53,19 +53,27 @@
               padding: 10px;
               overflow-y: auto;
             }
-
+            #chatbot-footer {
+                margin-top:10px;
+            }
             #chatbot-input {
-              border: none;
+              border: 1px;
               border-top: 1px solid #ddd;
               padding: 10px;
               position: absolute;
+              margin-top:10px;
+              bottom: 0;
             }
+
             #chatHistory{
                 text-align: left;
                 width: 100%;
+                height:90%;
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
+                padding: 10px;
+                 margin-bottom: 8px;
             }
             //
             .chat-history{
@@ -79,13 +87,14 @@
                 width: fit-content;
                 width: 100%;
                 word-wrap: break-word;
+                padding: 10px;
+                 margin-bottom: 8px;
             }
              .chat-message.user-input {
                 background-color: #d0eaff; /*light blue*/
                 text-align: left;
                 border-radius: 5px;
                 padding: 5px;
-                margin-bottom: 8px;
                }
 
             .chat-message.ai_response {
@@ -93,7 +102,7 @@
                 text-align: left;
                 border-radius: 5px;
                 padding: 5px;
-                margin-bottom: 8px;
+                margin-bottom: 50px;
                 /*add*/
                 display:flex;
                 overflow-y: auto;

@@ -1,8 +1,8 @@
 {% include 'layout.html' %}
-<!--<body style="background-image: url('images/background.jpg');"></body>
-<img src="{{image_url}}" alt="image">-->
+<body style="background-image: url('../images/background.jpg');"></body>
+<!--<img src="{{image_url}}" alt="image">-->
 <div class="container mt-5">
-    <img src="../images/background.JPG" alt="image">
+    <!--<img src="../images/background.JPG" alt="image">-->
     <div id="chatbot-container">
     <div id="chatbot-window">
       <div id="chatbot-header">Chatbot</div>
@@ -12,10 +12,15 @@
            {{response}}
           </div>
         {% endfor %}
+        <div id="bottom"></div>
       </div>
 
-      <input class="form-control" placeholder="Add input here" id="chatbot-input">
+        <div id="chatbot-footer">
+        <input class="form-control" placeholder="Add input here" id="chatbot-input">
+        </div>
     </div>
+
+
 
     <button id="chatbot-toggle">💬</button>
   </div>
@@ -67,6 +72,8 @@
               messageDiv.textContent = buffer;
 
               chatHistory.appendChild(messageDiv);
+              chatHistory.scrollTop = chatHistory.scrollHeight;
+              document.getElementById("bottom").scrollIntoView({behavior:"smooth"});
               lastUserMessageDiv = messageDiv;
               isNewUserInput = false;
           }
@@ -83,6 +90,7 @@
       userInputDiv.textContent = message;
       chatHistory.appendChild(userInputDiv);
       chatHistory.scrollTop = chatHistory.scrollHeight;
+      document.getElementById("bottom").scrollIntoView({behavior:"smooth"});
       ws.send(message);
       userInput.value = ""; // Clear input filed after sending
       isNewUserInput = true; // set the flag as it's a new user input
@@ -99,10 +107,10 @@
       }
     };
     userInput.addEventListener("keydown", function(e){
-    if(e.key === "Enter"){
-      e.preventDefault();
-      sendMessage();
-    }
-  });
+        if(e.key === "Enter"){
+          e.preventDefault();
+          sendMessage();
+        }
+    });
 
 </script>
