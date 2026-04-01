@@ -6,4 +6,4 @@ python-dotenv==1.2.1
 python-multipart==0.0.22
 uvicorn==0.41.0
 websockets==16.0
-langchain_community== 0.4.1
+langchain_community==0.4.1
