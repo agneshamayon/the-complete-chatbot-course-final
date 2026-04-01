@@ -7,3 +7,6 @@ python-multipart==0.0.22
 uvicorn==0.41.0
 websockets==16.0
 langchain_community==0.4.1
+langchain_openai==1.1.12
+langchain_core==1.2.22
+langchain_text_splitters==1.1.1
