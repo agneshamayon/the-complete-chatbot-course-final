@@ -1,49 +1,41 @@
 {% include 'layout.html' %}
-<!--<body style="background-image: url('../images/background.jpg');"></body>-->
+<h1>
+Domaine de Costeplane
+</h1>
+<h2>
+  dans l'Aveyron
+</h2>
+<div class="container mt-2">
+     <div id="chatbot-container">
+        <div id="chatbot-window">
+          <div id="chatbot-header">Chatbot prompt +manual
 
-<!--<img src="{{image_url}}" alt="image">-->
-<div class="container mt-5">
-    <!--<img src="../images/background.JPG" alt="image">-->
-    <div id="chatbot-container">
-    <div id="chatbot-window">
-      <div id="chatbot-header">Chatbot</div>
-      <div id="chatHistory">
-        {% for response in chat_responses %}
-          <div class="{{'chat-message user-input' if loop.index0 is even else 'chat-message ai-response'}}">
-           {{response}}
           </div>
-        {% endfor %}
-        <div id="bottom"></div>
-      </div>
-
-        <div id="chatbot-footer">
-        <input class="form-control" placeholder="Add input here" id="chatbot-input">
+          <div id="chat-history">
+            {% for response in chat_responses %}
+              <div class="{{'chat-message user-input' if loop.index0 is even else 'chat-message ai-response'}}">
+               {{response}}
+              </div>
+            {% endfor %}
+            <div id="bottom"></div>
+          </div>
+          <div id="chatbot-footer">
+              <input class="form-control" placeholder="Add input here" id="chatbot-input">
+          </div>
         </div>
+        <button id="chatbot-toggle">💬</button>
     </div>
-
-
-
-    <button id="chatbot-toggle">💬</button>
-  </div>
-
-  </div>
 </div>
 
 <script>
   var websocketString = '';
-  /*
-  if (window.location.hostname === '127.0.0.1'){
-    websocketString = "ws://localhost:8000/ws";
-  } else {
-    websocketString = `wss://${window.location.hostname}/ws`
-  }
-  */
+
   const wsProtocol = window.location.protocol === 'https:'
   ? 'wss'
   : 'ws';
   websocketString = `${wsProtocol}://${window.location.host}/ws`;
   var ws = new WebSocket(websocketString);
-  var chatHistory =  document.getElementById("chatHistory");
+  var chatHistory =  document.getElementById("chat-history");
   var lastUserMessageDiv = null; // keep track of the last uer message div
   var isNewUserInput = true; // Flag to track when a new user input happens
   const toggle = document.getElementById("chatbot-toggle");
@@ -53,9 +45,8 @@
   let buffer = "";
 
   ws.onmessage = function(event) {
-
+      console.log(typeof event.data)
       const token = event.data;
-
       buffer += token;
 
       // afficher seulement quand on a un espace ou ponctuation
@@ -68,17 +59,22 @@
           } else {
 
               const messageDiv = document.createElement("div");
-              messageDiv.className = "chat-message ai-reponse";
+              messageDiv.className = "chat-message ai-response";
 
               messageDiv.textContent = buffer;
 
-              chatHistory.appendChild(messageDiv);
-              chatHistory.scrollTop = chatHistory.scrollHeight;
+              //chatHistory.appendChild(messageDiv);
+              chatHistory.insertBefore(messageDiv, bottom);
+              //chatHistory.scrollTop = chatHistory.scrollHeight;
               document.getElementById("bottom").scrollIntoView({behavior:"smooth"});
               lastUserMessageDiv = messageDiv;
               isNewUserInput = false;
-          }
+                  // se positionner sur la question utilisateur
 
+              //smartScroll();
+              //document.getElementById("bottom").scrollIntoView({behavior:"smooth"});
+              //scrollToBottom();
+          }
           buffer = "";
       }
   };
@@ -90,15 +86,20 @@
       userInputDiv.className = "chat-message user-input"; //use user-input class
       userInputDiv.textContent = message;
       chatHistory.appendChild(userInputDiv);
+      chatHistory.insertBefore(userInputDiv, bottom);
       chatHistory.scrollTop = chatHistory.scrollHeight;
       document.getElementById("bottom").scrollIntoView({behavior:"smooth"});
       ws.send(message);
+
       userInput.value = ""; // Clear input filed after sending
       isNewUserInput = true; // set the flag as it's a new user input
       lastUserMessageDiv = null; // prepare for the next message
+      scrollToBottom();
+      smartScroll();
+      document.getElementById("bottom").scrollIntoView({behavior:"smooth", block: "start"});
+
     }
     };
-
 
     toggle.onclick = () => {
       if (windowChat.style.display === "flex") {
@@ -113,5 +114,19 @@
           sendMessage();
         }
     });
+
+    function isUserAtBottom() {
+      return chatHistory.scrollHeight - chatHistory.scrollTop - chatHistory.clientHeight < 50;
+    }
+    function smartScroll() {
+      if (isUserAtBottom()) {
+        requestAnimationFrame(() => {
+          chatHistory.scrollTop = chatHistory.scrollHeight;
+        });
+      }
+      }
+    function scrollToBottom(){
+         document.getElementById("bottom").scrollIntoView({behavior: "smooth"});
+    }
 
 </script>

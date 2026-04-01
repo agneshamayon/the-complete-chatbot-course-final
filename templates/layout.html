@@ -9,11 +9,21 @@
 
         <title>Chatbot</title>
         <style>
-
+            h1 {
+              text-align: center;
+              font-style: italic;
+              font-size: 54px;
+              color: royalblue;
+            }
+            h2 {
+              text-align: center;
+              font-style: italic;
+              color:royalblue;
+            }
             #chatbot-container {
               position: fixed;
               bottom: 20px;
-              right: 20px;
+              right: 100px;
               font-family: Arial, sans-serif;
             }
 
@@ -21,7 +31,8 @@
               width: 60px;
               height: 60px;
               border-radius: 50%;
-              background: #007bff;
+              /*background: #007bff;*/
+              background: royalblue;
               color: white;
               border: none;
               font-size: 24px;
@@ -42,19 +53,15 @@
             }
 
             #chatbot-header {
-              background: #007bff;
+              /*background: #007bff;*/
+              background: royalblue;
               color: white;
               padding: 10px;
               border-radius: 10px 10px 0 0;
             }
 
-            #chatbot-messages {
-              flex: 1;
-              padding: 10px;
-              overflow-y: auto;
-            }
             #chatbot-footer {
-                margin-top:10px;
+                margin-top:45px;
             }
             #chatbot-input {
               border: 1px;
@@ -65,70 +72,59 @@
               bottom: 0;
             }
 
-            #chatHistory{
+            #chat-history{
                 text-align: left;
                 width: 100%;
-                height:90%;
+                height:300px;
                 display: flex;
                 flex-direction: column;
                 overflow-y: auto;
                 padding: 10px;
-                 margin-bottom: 8px;
-            }
-            //
-            .chat-history{
-                text-align: left;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-                overflow-y: auto;
-            }
-            .chat-message {
-                width: fit-content;
-                width: 100%;
-                word-wrap: break-word;
-                padding: 10px;
-                 margin-bottom: 8px;
-            }
-             .chat-message.user-input {
-                background-color: #d0eaff; /*light blue*/
-                text-align: left;
-                border-radius: 5px;
-                padding: 5px;
-               }
 
-            .chat-message.ai_response {
-                background-color: #f1f1f1; /*light grey*/
-                text-align: left;
-                border-radius: 5px;
+            }
+           .chat-message {
+                width: fit-content;
+                word-wrap: break-word;
                 padding: 5px;
-                margin-bottom: 50px;
-                /*add*/
-                display:flex;
-                overflow-y: auto;
-                white-space: nowrap;
-                word-break: normal;
-                overflow-wrap: break-word;
+                margin-bottom: 8px;
+            }
+           .chat-message.user-input {
+                background-color: #d0eaff; /*light blue*/
+                border-radius: 15px;
+                padding: 5px;
+                align-self: flex-end; /* coller à droite */
                }
-            #footer {
-                position: fixed;
-                bottom: 3%;
-                width: 95%;
+           .chat-message.ai-response {
+                background-color: #f1f1f1; /*light grey*/
+                border-radius: 15px;
+                padding: 5px;
+                align-self: flex-start; /* coller à gauche */
+               }
+            #expandBtn{
+                  background:none;
+                  border:none;
+                  cursor:pointer;
+                  padding:6px;
+                  color:#555;
                 }
-                body {
-  //background-image: url("https://picsum.photos/1920/1080");
-  //background-image: url("images/background.JPG");
-  background-image: url("{{ url_for('static', filename='images/background.JPG') }}
-}
+
+                #expandBtn:hover{
+                  color:#000;
+                }
+           body {
+                margin:0;
+                height:100vh;
+                background-image: url("/static/images/background.jpg");
+                background-size: cover;
+                background-position: center;
+                background-position: center;
+
+                /*display: flex;            Flexbox pour centrer */
+                justify-content: center; /* centre horizontalement */
+                align-items: center; /*     centre verticalement */
+                flex-direction: column;  /* pour empiler titre et chat */
+            }
+
         </style>
     </head>
-
-    <!--<body>
-        {% include 'navbar.html' %}
-        {% block content %}
-        {% endblock %}
-        <!- Option 1: Bootstrap Bundle with Popper ->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    </body>-->
 </html>
